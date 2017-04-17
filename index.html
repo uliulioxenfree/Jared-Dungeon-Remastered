@@ -3048,6 +3048,7 @@ A nearby sign lists the accomplishments of those who have entered the dungeon be
 (set: $slimeRandomiser to 101)\
 (set: $tentacled to 0)\
 (set: $keysOld to 0)\
+(set: $poopKey to 0)\
 (set: $marked to (array: &quot;none&quot;))\
 (set: $direction to (datamap: &quot;direction&quot;, &quot;none&quot;, &quot;distance&quot;, 0))\
 (if: $achievements is not (array: &quot;&quot;))[(save-game:&quot;Slot A&quot;)]\
@@ -3261,10 +3262,21 @@ You are now tired *and* injured.(set: $energy to it - 5)(set: $HP to it - ($mons
 (else:)[Carnivorous pigeons stare at you from the rafters. They cock their heads and look at you through red eyes.
 
 (set: $monster to (datamap: &quot;fleeChance&quot;, 35, &quot;damage&quot;, 18, &quot;bonus&quot;, &quot;Feed them&quot;, &quot;type&quot;, &quot;pigeons&quot;))\
-(display: &quot;monster&quot;)]</tw-passagedata><tw-passagedata pid="9" name="poop" tags="" position="927,784">You enter a small tiled bathroom. The walls are smeared with something brown.
+(display: &quot;monster&quot;)]</tw-passagedata><tw-passagedata pid="9" name="poop" tags="" position="927,784">(if: $poopKey is 1)[(set: $poopKey to 2)You enter a small tiled bathroom. The walls are smeared with something brown.
+
+But more importantly, one of the tiles bears a subtle marking. It&#x27;s slightly loose. All you need to do is press lightly, and... there.
+
+A small compartment opens. Inside is a key.
+
+(set: $keys to it + 1)\
+*You now have (print: $keys keys)*
+
+[[Lovely.|Main]]
+]\
+(else:)[You enter a small tiled bathroom. The walls are smeared with something brown.
 
 (set: $delayExecute to &quot;(set: $sanity to it - (random:10,15))&quot;)\
-[[How did this even happen?|Main]]</tw-passagedata><tw-passagedata pid="10" name="badFood" tags="" position="377,1245">(if: (random: 1,3) &lt; 3)[You find (either: &quot;a questionable&quot;, &quot;a rancid&quot;, &quot;an odoursome&quot;) (either: &quot;bowl of dhal&quot;, &quot;potato&quot;, &quot;slice of birthday cake&quot;, &quot;stew&quot;, &quot;boiled egg&quot;, &quot;plate of dragonfruit&quot;, &quot;curry&quot;, &quot;mushroom&quot;, &quot;bowl of muesli&quot;, &quot;pizza&quot;, &quot;burrito&quot;) on the dungeon floor.
+[[How did this even happen?|Main]]]</tw-passagedata><tw-passagedata pid="10" name="badFood" tags="" position="377,1245">(if: (random: 1,3) &lt; 3)[You find (either: &quot;a questionable&quot;, &quot;a rancid&quot;, &quot;an odoursome&quot;) (either: &quot;bowl of dhal&quot;, &quot;potato&quot;, &quot;slice of birthday cake&quot;, &quot;stew&quot;, &quot;boiled egg&quot;, &quot;plate of dragonfruit&quot;, &quot;curry&quot;, &quot;mushroom&quot;, &quot;bowl of muesli&quot;, &quot;pizza&quot;, &quot;burrito&quot;) on the dungeon floor.
 
 (link: &quot;Eat it.&quot;)[(set: $HP to it - 10)(set: $satiety to it + 10)(go-to: &quot;Main&quot;)]
 [[Don&#x27;t eat it.|Main]]]\
@@ -4553,15 +4565,18 @@ But you escape. And you hold the arrow in your hand as a souvenier.
 With the process completed, your legs feel stronger and more agile. Let&#x27;s see how fast you can run now.
 
 (set: $fleeBonus to it + 8)\
-[[Onwards!|Main]]</tw-passagedata><tw-passagedata pid="204" name="Read" tags="" position="2208,2313">(set: $cards to it - (array: &quot;ethicsTome&quot;))\
-(set: $badTome to it + 1)\
+[[Onwards!|Main]]</tw-passagedata><tw-passagedata pid="204" name="Read" tags="" position="2208,2313">(set: $badTome to it + 1)\
 (set: $sanity to it + 1)\
 (if: $badTome &gt;=100)[(go-to: &quot;Finish Reading&quot;)]\
-(either: &quot;How interesting!&quot;, &quot;You never knew that!&quot;, &quot;What a cogent argument!&quot;, &quot;You find yourself agreeing with this chapter&#x27;s thesis.&quot;, &quot;You find yourself disagreeing with this chapter&#x27;s thesis.&quot;, &quot;Another page?&quot;, &quot;Fascinating!&quot;, &quot;What a well-chosen collection of papers.&quot;, &quot;This author&#x27;s institutional affiliation is especially impressive.&quot;, &quot;What an under-appreciated field of study.&quot;, &quot;What a well-chosen quotation!&quot;, &quot;This section has an especially strong concluding paragraph.&quot;, &quot;You find yourself wanting to learn more about the ethics of dungeoneering.&quot;, &quot;You would normally only expect this kind of quality from a university press.&quot;, &quot;This chapter contains at least five neologisms. And they&#x27;re all amazing!&quot;, &quot;The pages fly by.&quot;,&quot;This page was written entirely in the passive voice.&quot;, &quot;How erudite!&quot;)&lt;script&gt;
+(if: (random: 1,250) is 1 and $poopKey is 0)[This page yields some unexpected and highly valuable information: there is a key carefully concealed in one of the dungeon bathrooms. You just need to know where to look.
+
+And now you do.
+(set: $poopKey to 1)]\
+(else:)[(either: &quot;How interesting!&quot;, &quot;You never knew that!&quot;, &quot;What a cogent argument!&quot;, &quot;You find yourself agreeing with this chapter&#x27;s thesis.&quot;, &quot;You find yourself disagreeing with this chapter&#x27;s thesis.&quot;, &quot;Another page?&quot;, &quot;Fascinating!&quot;, &quot;What a well-chosen collection of papers.&quot;, &quot;This author&#x27;s institutional affiliation is especially impressive.&quot;, &quot;What an under-appreciated field of study.&quot;, &quot;What a well-chosen quotation!&quot;, &quot;This section has an especially strong concluding paragraph.&quot;, &quot;You find yourself wanting to learn more about the ethics of dungeoneering.&quot;, &quot;You would normally only expect this kind of quality from a university press.&quot;, &quot;This chapter contains at least five neologisms. And they&#x27;re all amazing!&quot;, &quot;The pages fly by.&quot;,&quot;This page was written entirely in the passive voice.&quot;, &quot;How erudite!&quot;)]
+&lt;script&gt;
 stopaudio();
 audio.calm.play();
 &lt;/script&gt;
-
 [[Continue reading|Read]] 
 (link: &quot;Finish reading&quot;)[&lt;script&gt;
 stopaudio();
